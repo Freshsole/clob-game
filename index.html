@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <title>Klikací hra</title>
+  <style>
+    body { text-align: center; font-family: Arial, sans-serif; margin-top: 50px; }
+    button { font-size: 24px; padding: 15px 30px; margin: 10px; cursor: pointer; }
+    input { font-size: 18px; padding: 10px; width: 250px; }
+    #score { font-size: 28px; margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <h1>Klikni co nejvíc za 10 sekund!</h1>
+  <p id="score">Skóre: 0</p>
+  <button id="clickBtn">Klikni!</button>
+  <br />
+  <input type="text" id="username" placeholder="Tvoje přezdívka" />
+  <br />
+  <button id="saveBtn">💾 Uložit skóre do databáze</button>
+
+  <script>
+    let score = 0;
+    let started = false;
+
+    document.getElementById('clickBtn').addEventListener('click', () => {
+      if (!started) {
+        started = true;
+        setTimeout(() => {
+          document.getElementById('clickBtn').disabled = true;
+          alert('Konec hry! Můžeš teď uložit skóre.');
+        }, 10000);
+      }
+      score++;
+      document.getElementById('score').textContent = 'Skóre: ' + score;
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      const usernameInput = document.getElementById('username');
+      const username = usernameInput.value.trim() || 'Anonym';
+
+      fetch('https://cbloc.wuaze.com/save_score.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, score: score })
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Chyba serveru');
+        return response.text();
+      })
+      .then(message => alert(message))
+      .catch(error => alert('Chyba při ukládání: ' + error.message));
+    });
+  </script>
+</body>
+</html>

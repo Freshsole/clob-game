@@ -1,0 +1,16 @@
+##################################################
+#
+# Custom .htaccess - disable externí přesměrování chyb
+#
+##################################################
+
+DirectoryIndex index.php index.html index.htm index2.html
+
+# Zakomentováno nebo smazáno přesměrování chyb:
+# ErrorDocument 403 https://errors.infinityfree.net/errors/403/
+# ErrorDocument 404 https://errors.infinityfree.net/errors/404/
+# ErrorDocument 500 https://errors.infinityfree.net/errors/500/
+
+# Pokud chceš vlastní chyby, můžeš definovat lokální soubory, například:
+# ErrorDocument 404 /404.html
+# ErrorDocument 500 /500.html
